@@ -21,7 +21,8 @@ with open("Results.tsv") as tsv, open("Callouts.xls"):
     while not startAppending:
         if readSheet.col(0)[i].value == '':
             startAppending = True
-            startingRowNumber = i + 1
+            startingRowNumber = i
+            print(startingRowNumber)
         i += 1
 
     print('Will append spreadsheet from row #' + str(startingRowNumber - 1))
@@ -31,8 +32,8 @@ with open("Results.tsv") as tsv, open("Callouts.xls"):
     next(iterResults)
 
     # Extracting data from TSV file
+    i = 0
     for row in iterResults:
-        # Getting data from the TSV file
         ticketID = row[0]
         ticketCreated = row[15]
         if row[20] == '':    # If no Nagios alarm, use ticket's subject - problem when ceph-mon1-5 callout
@@ -40,12 +41,13 @@ with open("Results.tsv") as tsv, open("Callouts.xls"):
         else:
             alarm = row[20]
 
-    # Putting data into spreadsheet
+        # Putting data into spreadsheet
+        currentRow = startingRowNumber + i
+        currentSheet.write(currentRow, 0, alarm)    # Alarm name
+        currentSheet.write(currentRow, 2, ticketCreated)    # Date issued
+        currentSheet.write(currentRow, 3, ticketCreated)    # Time issued
+        currentSheet.write(currentRow, 4, ticketID)    # RT query
+        i += 1
 
     calloutsBook.save("Callouts.xls")
     print('Spreadsheet changes saved')
-
-
-
-
-
