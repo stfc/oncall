@@ -2,7 +2,7 @@ import csv
 from xlrd import open_workbook
 from xlutils.copy import copy
 
-with open("Results.tsv") as tsv, open("Callouts.xls"):
+with open("Results.tsv") as tsv:
     print('Both files found')
 
     wb = open_workbook("Callouts.xls", formatting_info=True)
