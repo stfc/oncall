@@ -1,5 +1,6 @@
 import csv
 from openpyxl import load_workbook
+from openpyxl.styles import Alignment
 from datetime import datetime
 
 with open("Results.tsv") as tsv:
@@ -29,7 +30,7 @@ with open("Results.tsv") as tsv:
     # Extracting data from TSV file
     i = 0
     for row in iterResults:
-        ticketID = row[0]
+        ticketID = int(row[0])
 
         ticketCreated = datetime.strptime(row[15], '%Y-%m-%d %H:%M:%S')
         dateCreated = ticketCreated.strftime('%d/%m/%Y')
@@ -45,7 +46,7 @@ with open("Results.tsv") as tsv:
         currentSheet.cell(row=currentRow, column=1, value=alarm)          # Alarm name
         currentSheet.cell(row=currentRow, column=3, value=dateCreated)    # Date issued
         currentSheet.cell(row=currentRow, column=4, value=timeCreated)    # Time issued
-        currentSheet.cell(row=currentRow, column=5, value=ticketID)       # RT query
+        currentSheet.cell(row=currentRow, column=5, value=ticketID).alignment = Alignment(horizontal='center')       # RT query
         i += 1
 
     wb.save("Callouts.xlsx")
