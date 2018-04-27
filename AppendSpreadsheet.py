@@ -1,31 +1,25 @@
 import csv
-from xlrd import open_workbook
-from xlutils.copy import copy
+from openpyxl import load_workbook
 
 with open("Results.tsv") as tsv:
     print('Both files found')
 
-    wb = open_workbook("Callouts.xls", formatting_info=True)
-    # Make a writeable copy
-    calloutsBook = copy(wb)
-    currentSheet = calloutsBook.get_sheet('Callouts 2018')
+    wb = load_workbook("Callouts.xlsx")
+    currentSheet = wb['Callouts 2018']
 
     # Find which row to start appending spreadsheet
-    firstRow = currentSheet.row(0)
-    readSheet = wb.sheet_by_name('Callouts 2018')
-    alarmColumn = readSheet.col_values(0)
+    alarmColumn = currentSheet['A']
 
     print('Working out where to start appending spreadsheet')
     startAppending = False
-    i = 1    # Start at 1 as first result will always be 'Alarm name'
+    i = 2    # Start at 2 as first result will always be 'column header'
     while not startAppending:
-        if readSheet.col(0)[i].value == '':
+        if alarmColumn[i].value is None:
             startAppending = True
-            startingRowNumber = i
-            print(startingRowNumber)
+            startingRowNumber = i + 1
         i += 1
 
-    print('Will append spreadsheet from row #' + str(startingRowNumber - 1))
+    print('Will append spreadsheet from row #' + str(startingRowNumber))
 
     # Skips first row of TSV file due to column headers
     iterResults = iter(csv.reader(tsv, dialect="excel-tab"))
@@ -43,11 +37,11 @@ with open("Results.tsv") as tsv:
 
         # Putting data into spreadsheet
         currentRow = startingRowNumber + i
-        currentSheet.write(currentRow, 0, alarm)    # Alarm name
-        currentSheet.write(currentRow, 2, ticketCreated)    # Date issued
-        currentSheet.write(currentRow, 3, ticketCreated)    # Time issued
-        currentSheet.write(currentRow, 4, ticketID)    # RT query
+        currentSheet.cell(row=currentRow, column=1).value = alarm    # Alarm name
+        currentSheet.cell(row=currentRow, column=3).value = ticketCreated    # Date issued
+        currentSheet.cell(row=currentRow, column=4).value = ticketCreated    # Time issued
+        currentSheet.cell(row=currentRow, column=5).value = ticketID    # RT query
         i += 1
 
-    calloutsBook.save("Callouts.xls")
+    wb.save("Callouts.xlsx")
     print('Spreadsheet changes saved')
