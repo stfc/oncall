@@ -1,6 +1,6 @@
 import csv
 from openpyxl import load_workbook
-from openpyxl.styles import Alignment
+from openpyxl.styles import Alignment, Font
 from datetime import datetime
 
 with open("Results.tsv") as tsv:
@@ -46,7 +46,10 @@ with open("Results.tsv") as tsv:
         currentSheet.cell(row=currentRow, column=1, value=alarm)          # Alarm name
         currentSheet.cell(row=currentRow, column=3, value=dateCreated)    # Date issued
         currentSheet.cell(row=currentRow, column=4, value=timeCreated)    # Time issued
-        currentSheet.cell(row=currentRow, column=5, value=ticketID).alignment = Alignment(horizontal='center')       # RT query
+        # RT query
+        currentSheet.cell(row=currentRow, column=5, value=ticketID).alignment = Alignment(horizontal='center')
+        currentSheet.cell(row=currentRow, column=5).hyperlink = 'https://helpdesk.gridpp.rl.ac.uk/Ticket/Display' \
+                                                                '.html?id=' + str(ticketID)
         i += 1
 
     wb.save("Callouts.xlsx")
