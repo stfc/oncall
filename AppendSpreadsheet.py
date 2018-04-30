@@ -1,6 +1,6 @@
 import csv
 from openpyxl import load_workbook
-from openpyxl.styles import Alignment, Font
+from openpyxl.styles import Alignment, Side, Border
 from datetime import datetime
 
 with open("Results.tsv") as tsv:
@@ -56,6 +56,47 @@ with open("Results.tsv") as tsv:
     currentDate = datetime.now().strftime('%d-%b')
     currentSheet.cell(row=startingRowNumber, column=12, value=currentDate).alignment = Alignment(horizontal='center', vertical='center')
     currentSheet.merge_cells(start_row=startingRowNumber, start_column=12, end_row=currentRow, end_column=12)
+
+    # Apply inner and outer borders (inner then outer)
+    rows = currentSheet.iter_rows(min_row=startingRowNumber, min_col=1, max_row=currentRow, max_col=17)
+
+    # Setting inner borders
+    innerBorderStyle = Side(border_style='thin', color='FF000000')
+    innerBorderFormat = Border(left=innerBorderStyle, right=innerBorderStyle, top=innerBorderStyle, bottom=innerBorderStyle)
+    for row in rows:
+        for cell in row:
+            cell.border = innerBorderFormat
+
+    # Setting outer border
+    # Code found at: https://stackoverflow.com/questions/34520764/apply-border-to-range-of-cells-using-openpyxl
+    # Written by Yaroslav Admin, edited by Adam Stewart
+
+    outerRows = currentSheet.iter_rows(min_row=startingRowNumber, min_col=1, max_row=currentRow, max_col=17)
+    outerBorderStyle = Side(border_style='medium', color='FF000000')
+    outerRows = list(outerRows)
+    max_y = len(outerRows) - 1
+    for pos_y, cells in enumerate(outerRows):
+        max_x = len(cells) - 1  # index of the last cell
+        for pos_x, cell in enumerate(cells):
+            border = Border(
+                left=cell.border.left,
+                right=cell.border.right,
+                top=cell.border.top,
+                bottom=cell.border.bottom
+            )
+            # Checking if an edge cell
+            if pos_x == 0:
+                border.left = outerBorderStyle
+            if pos_x == max_x:
+                border.right = outerBorderStyle
+            if pos_y == 0:
+                border.top = outerBorderStyle
+            if pos_y == max_y:
+                border.bottom = outerBorderStyle
+
+            # Set new border only if it's one of the edge cells
+            if pos_x == 0 or pos_x == max_x or pos_y == 0 or pos_y == max_y:
+                cell.border = border
 
     wb.save("Callouts.xlsx")
     print('Spreadsheet changes saved')
