@@ -52,5 +52,10 @@ with open("Results.tsv") as tsv:
                                                                 '.html?id=' + str(ticketID)
         i += 1
 
+    # Merge cells
+    currentDate = datetime.now().strftime('%d-%b')
+    currentSheet.cell(row=startingRowNumber, column=12, value=currentDate).alignment = Alignment(horizontal='center', vertical='center')
+    currentSheet.merge_cells(start_row=startingRowNumber, start_column=12, end_row=currentRow, end_column=12)
+
     wb.save("Callouts.xlsx")
     print('Spreadsheet changes saved')
