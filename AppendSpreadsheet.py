@@ -3,13 +3,17 @@ from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Side, Border
 from datetime import datetime
 
-with open("Results.tsv") as tsv:
-    wb = load_workbook("Callouts.xlsx")
-    currentSheet = wb['Callouts 2018']
+NEW_TICKETS_FILE_NAME = "Results.tsv"
+SPREADSHEET_NAME = "Callouts.xlsx"
+SHEET_NAME = "Callouts 2018"
+
+with open(NEW_TICKETS_FILE_NAME) as tsv:
+    wb = load_workbook(SPREADSHEET_NAME)
+    currentSheet = wb[SHEET_NAME]
 
     # Find which row to start appending spreadsheet
     alarmColumn = currentSheet['A']
-    print('Working out where to start appending spreadsheet')
+    print('Calculating where to append spreadsheet')
 
     startAppending = False
     i = 2    # Start at 2 as first result will always be 'column header'
@@ -40,11 +44,12 @@ with open("Results.tsv") as tsv:
         dateCreated = ticketCreated.strftime('%d/%m/%Y')
         timeCreated = ticketCreated.strftime('%H:%M:%S')
 
-        # In working hours or not
+        # Is callout in work hours?
         weekday = ticketCreated.isoweekday()
         if '08:30:00' < timeCreated < '17:00:00' and weekday < 6:
             workingHours = True
 
+        # Get Nagios alarm (or subject if not from Nagios)
         alarm = row[2]
         if nagiosFiller in alarm:
             alarm = alarm[len(nagiosFiller) + 1:]    # Just leaves Nagios alarm
@@ -57,7 +62,7 @@ with open("Results.tsv") as tsv:
         elif 'gdss' in alarm.lower():
             service = 'DISK Server'
 
-        # Get hostname
+        # Get hostname from Nagios alarm
         if hostFiller in alarm:
             j = len(alarm) - 1
             while hostCheck:
@@ -97,6 +102,7 @@ with open("Results.tsv") as tsv:
     for row in rows:
         for cell in row:
             if cell.column == 'A' or cell.column == 'K':
+                # These columns need to be horizontally left aligned (alarm and comment columns)
                 cell.alignment = Alignment(vertical='center', wrap_text=True)
             else:
                 cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
@@ -133,5 +139,5 @@ with open("Results.tsv") as tsv:
             if pos_x == 0 or pos_x == max_x or pos_y == 0 or pos_y == max_y:
                 cell.border = border
 
-    wb.save("Callouts.xlsx")
+    wb.save(SPREADSHEET_NAME)
     print('Spreadsheet changes saved')
