@@ -4,8 +4,6 @@ from openpyxl.styles import Alignment, Side, Border
 from datetime import datetime
 
 with open("Results.tsv") as tsv:
-    print('Both files found')
-
     wb = load_workbook("Callouts.xlsx")
     currentSheet = wb['Callouts 2018']
 
