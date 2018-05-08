@@ -1,4 +1,4 @@
-import csv
+import csv, sys, time, os
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Side, Border
 from datetime import datetime
@@ -8,8 +8,23 @@ SPREADSHEET_NAME = "Callouts.xlsx"
 SHEET_NAME = "Callouts 2018"
 
 with open(NEW_TICKETS_FILE_NAME) as tsv:
-    wb = load_workbook(SPREADSHEET_NAME)
-    currentSheet = wb[SHEET_NAME]
+    try:
+        wb = load_workbook(SPREADSHEET_NAME)
+    except FileNotFoundError:
+        print(SPREADSHEET_NAME, 'doesn\'t exist (weekly spreadsheet), please add this file to the directory '
+                                'of this script')
+        print('Directory of script:', os.path.dirname(os.path.realpath(__file__)))
+        time.sleep(4)
+        sys.exit()
+
+    try:
+        currentSheet = wb[SHEET_NAME]
+    except KeyError:
+        print('Sheet named \'' + SHEET_NAME + '\' doesn\'t exist')
+        print('Either create a sheet with this name in', SPREADSHEET_NAME, 'or edit script code so it finds a sheet '
+                                                                           'that does exist')
+        time.sleep(4)
+        sys.exit()
 
     # Find which row to start appending spreadsheet
     alarmColumn = currentSheet['A']
@@ -98,7 +113,8 @@ with open(NEW_TICKETS_FILE_NAME) as tsv:
     # Setting inner borders and cell alignment
     rows = currentSheet.iter_rows(min_row=startingRowNumber, min_col=1, max_row=currentRow, max_col=17)
     innerBorderStyle = Side(border_style='thin', color='FF000000')
-    innerBorderFormat = Border(left=innerBorderStyle, right=innerBorderStyle, top=innerBorderStyle, bottom=innerBorderStyle)
+    innerBorderFormat = Border(left=innerBorderStyle, right=innerBorderStyle, top=innerBorderStyle,
+                               bottom=innerBorderStyle)
     for row in rows:
         for cell in row:
             if cell.column == 'A' or cell.column == 'K':
