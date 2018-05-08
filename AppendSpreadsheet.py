@@ -55,22 +55,27 @@ with open("Results.tsv") as tsv:
         if service is not None:
             currentSheet.cell(row=currentRow, column=6, value=service)
         # RT query
-        currentSheet.cell(row=currentRow, column=5, value=ticketID).alignment = Alignment(horizontal='center')
+        currentSheet.cell(row=currentRow, column=5, value=ticketID)
         currentSheet.cell(row=currentRow, column=5).hyperlink = 'https://helpdesk.gridpp.rl.ac.uk/Ticket/Display' \
                                                                 '.html?id=' + str(ticketID)
         i += 1
 
     # Merge cells
     currentDate = datetime.now().strftime('%d-%b')
-    currentSheet.cell(row=startingRowNumber, column=12, value=currentDate).alignment = Alignment(horizontal='center', vertical='center')
+    currentSheet.cell(row=startingRowNumber, column=12, value=currentDate)
     currentSheet.merge_cells(start_row=startingRowNumber, start_column=12, end_row=currentRow, end_column=12)
 
-    # Setting inner borders
+    # Setting inner borders and cell alignment
     rows = currentSheet.iter_rows(min_row=startingRowNumber, min_col=1, max_row=currentRow, max_col=17)
     innerBorderStyle = Side(border_style='thin', color='FF000000')
     innerBorderFormat = Border(left=innerBorderStyle, right=innerBorderStyle, top=innerBorderStyle, bottom=innerBorderStyle)
     for row in rows:
         for cell in row:
+            if cell.column == 'A' or cell.column == 'K':
+                cell.alignment = Alignment(vertical='center')
+            else:
+                cell.alignment = Alignment(horizontal='center', vertical='center')
+
             cell.border = innerBorderFormat
 
     # Setting outer border
