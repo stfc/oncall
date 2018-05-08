@@ -9,8 +9,8 @@ with open("Results.tsv") as tsv:
 
     # Find which row to start appending spreadsheet
     alarmColumn = currentSheet['A']
-
     print('Working out where to start appending spreadsheet')
+
     startAppending = False
     i = 2    # Start at 2 as first result will always be 'column header'
     while not startAppending:
@@ -33,11 +33,17 @@ with open("Results.tsv") as tsv:
         hostStart = None
         service = None
         hostCheck = True
+        workingHours = False
         ticketID = int(row[0])
 
         ticketCreated = datetime.strptime(row[15], '%Y-%m-%d %H:%M:%S')
         dateCreated = ticketCreated.strftime('%d/%m/%Y')
         timeCreated = ticketCreated.strftime('%H:%M:%S')
+
+        # In working hours or not
+        weekday = ticketCreated.isoweekday()
+        if '08:30:00' < timeCreated < '17:00:00' and weekday < 6:
+            workingHours = True
 
         alarm = row[2]
         if nagiosFiller in alarm:
@@ -74,6 +80,9 @@ with open("Results.tsv") as tsv:
         currentSheet.cell(row=currentRow, column=5, value=ticketID)
         currentSheet.cell(row=currentRow, column=5).hyperlink = 'https://helpdesk.gridpp.rl.ac.uk/Ticket/Display' \
                                                                 '.html?id=' + str(ticketID)
+        if workingHours:
+            currentSheet.cell(row=currentRow, column=8, value='N/A')
+            currentSheet.cell(row=currentRow, column=10, value='Work hours')
         i += 1
 
     # Merge cells
