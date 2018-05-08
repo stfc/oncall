@@ -28,8 +28,11 @@ with open("Results.tsv") as tsv:
     # Extracting data from TSV file
     i = 0
     nagiosFiller = "Nagios issued and cleared service alarm"
+    hostFiller = "on_host_"
     for row in iterResults:
+        hostStart = None
         service = None
+        hostCheck = True
         ticketID = int(row[0])
 
         ticketCreated = datetime.strptime(row[15], '%Y-%m-%d %H:%M:%S')
@@ -40,6 +43,7 @@ with open("Results.tsv") as tsv:
         if nagiosFiller in alarm:
             alarm = alarm[len(nagiosFiller) + 1:]    # Just leaves Nagios alarm
 
+        # Service
         if 'ceph' in alarm.lower():
             service = 'CEPH'
         elif 'arc-ce' in alarm.lower():
@@ -47,9 +51,21 @@ with open("Results.tsv") as tsv:
         elif 'gdss' in alarm.lower():
             service = 'DISK Server'
 
+        # Get hostname
+        if hostFiller in alarm:
+            j = len(alarm) - 1
+            while hostCheck:
+                if alarm[j] == '_':
+                    hostStart = j
+                    hostCheck = False
+                j -= 1
+            hostname = alarm[hostStart + 1:]
+
         # Putting data into spreadsheet
         currentRow = startingRowNumber + i
         currentSheet.cell(row=currentRow, column=1, value=alarm)
+        if hostStart is not None:
+            currentSheet.cell(row=currentRow, column=2, value=hostname)
         currentSheet.cell(row=currentRow, column=3, value=dateCreated)
         currentSheet.cell(row=currentRow, column=4, value=timeCreated)
         if service is not None:
