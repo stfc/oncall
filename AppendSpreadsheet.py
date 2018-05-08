@@ -29,6 +29,7 @@ with open("Results.tsv") as tsv:
 
     # Extracting data from TSV file
     i = 0
+    nagiosFiller = "Nagios issued and cleared service alarm"
     for row in iterResults:
         ticketID = int(row[0])
 
@@ -36,10 +37,9 @@ with open("Results.tsv") as tsv:
         dateCreated = ticketCreated.strftime('%d/%m/%Y')
         timeCreated = ticketCreated.strftime('%H:%M:%S')
 
-        if row[20] == '':    # If no Nagios alarm, use ticket's subject - problem when ceph-mon1-5 callout
-            alarm = row[2]
-        else:
-            alarm = row[20]
+        alarm = row[2]
+        if nagiosFiller in alarm:
+            alarm = alarm[len(nagiosFiller) + 1:]    # Just leaves Nagios alarm
 
         # Putting data into spreadsheet
         currentRow = startingRowNumber + i
