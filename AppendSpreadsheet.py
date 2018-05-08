@@ -29,6 +29,7 @@ with open("Results.tsv") as tsv:
     i = 0
     nagiosFiller = "Nagios issued and cleared service alarm"
     for row in iterResults:
+        service = None
         ticketID = int(row[0])
 
         ticketCreated = datetime.strptime(row[15], '%Y-%m-%d %H:%M:%S')
@@ -39,11 +40,20 @@ with open("Results.tsv") as tsv:
         if nagiosFiller in alarm:
             alarm = alarm[len(nagiosFiller) + 1:]    # Just leaves Nagios alarm
 
+        if 'ceph' in alarm.lower():
+            service = 'CEPH'
+        elif 'arc-ce' in alarm.lower():
+            service = 'CE'
+        elif 'gdss' in alarm.lower():
+            service = 'DISK Server'
+
         # Putting data into spreadsheet
         currentRow = startingRowNumber + i
-        currentSheet.cell(row=currentRow, column=1, value=alarm)          # Alarm name
-        currentSheet.cell(row=currentRow, column=3, value=dateCreated)    # Date issued
-        currentSheet.cell(row=currentRow, column=4, value=timeCreated)    # Time issued
+        currentSheet.cell(row=currentRow, column=1, value=alarm)
+        currentSheet.cell(row=currentRow, column=3, value=dateCreated)
+        currentSheet.cell(row=currentRow, column=4, value=timeCreated)
+        if service is not None:
+            currentSheet.cell(row=currentRow, column=6, value=service)
         # RT query
         currentSheet.cell(row=currentRow, column=5, value=ticketID).alignment = Alignment(horizontal='center')
         currentSheet.cell(row=currentRow, column=5).hyperlink = 'https://helpdesk.gridpp.rl.ac.uk/Ticket/Display' \
