@@ -72,9 +72,9 @@ with open("Results.tsv") as tsv:
     for row in rows:
         for cell in row:
             if cell.column == 'A' or cell.column == 'K':
-                cell.alignment = Alignment(vertical='center')
+                cell.alignment = Alignment(vertical='center', wrap_text=True)
             else:
-                cell.alignment = Alignment(horizontal='center', vertical='center')
+                cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
 
             cell.border = innerBorderFormat
 
