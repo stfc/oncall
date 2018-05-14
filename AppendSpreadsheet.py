@@ -47,7 +47,7 @@ try:
 
         # Extracting data from TSV file
         i = 0
-        nagiosFiller = "Nagios issued and cleared service alarm"
+        nagiosFiller = "Nagios issued"
         hostFiller = "on_host_"
         for row in iterResults:
             hostStart = None
@@ -68,7 +68,11 @@ try:
             # Get Nagios alarm (or subject if not from Nagios)
             alarm = row[2]
             if nagiosFiller in alarm:
-                alarm = alarm[len(nagiosFiller) + 1:]    # Just leaves Nagios alarm
+                for k in range(len(nagiosFiller), len(alarm)):
+                    print(alarm[k])
+                    if 'T' in alarm[k]:
+                        alarm = alarm[k:]
+                        break
 
             # Service
             if 'ceph' in alarm.lower():
