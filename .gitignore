@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+Results.tsv
+Callouts.xls
+OnCall Spreadsheet Notes.txt
+*.xml
+*.iml
+*.xlsx
