@@ -69,7 +69,6 @@ try:
             alarm = row[2]
             if nagiosFiller in alarm:
                 for k in range(len(nagiosFiller), len(alarm)):
-                    print(alarm[k])
                     if 'T' in alarm[k]:
                         alarm = alarm[k:]
                         break
