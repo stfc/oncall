@@ -32,7 +32,7 @@ try:
         print('Calculating where to append spreadsheet')
 
         startAppending = False
-        i = 2    # Start at 2 as first result will always be 'column header'
+        i = 1    # Start at 1 as first result will always be 'column header'
         while not startAppending:
             if alarmColumn[i].value is None:
                 startAppending = True
@@ -55,14 +55,16 @@ try:
             hostCheck = True
             workingHours = False
             ticketID = int(row[0])
-
+            
             ticketCreated = datetime.strptime(row[15], '%Y-%m-%d %H:%M:%S')
-            dateCreated = ticketCreated.strftime('%d/%m/%Y')
-            timeCreated = ticketCreated.strftime('%H:%M:%S')
+            #Excel date time counts days and seconds since 1900-01-00 but mistakenly treats 1900 as a leap year
+            excelTicketCreated = ticketCreated - datetime(1899, 12, 30)
+            dateCreated = float(excelTicketCreated.days)
+            timeCreated = float(excelTicketCreated.seconds) / 86400
 
-            # Is callout in work hours?
+            # Is callout in work hours (8:30-5:00 converted into percent of day)?
             weekday = ticketCreated.isoweekday()
-            if '08:30:00' < timeCreated < '17:00:00' and weekday < 6:
+            if (60*8+30)/(24*60) < timeCreated < 17/24 and weekday < 6:
                 workingHours = True
 
             # Get Nagios alarm (or subject if not from Nagios)
