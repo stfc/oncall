@@ -20,7 +20,6 @@ There are a couple of steps to using this script as there will be some cleanup t
 - Put OnCall spreadsheet (found in TWiki within Tier 1 section) and TSV file in same folder as script and then run script
 
 ### Post-Script Execution
-- For each row added by the script, double click and press ENTER on the cell in 'Time issued' column. This will execute the formula that deals with the conditional formatting for working hours as this doesn't occur during the script. You will know which rows should be black as these will have the 'Normal Service Restored?'  and the 'Handled by' columns filled in.
 - Fill in any blank cells the script didn't fill from the following columns:
     - Host
     - Service
