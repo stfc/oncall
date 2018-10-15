@@ -82,6 +82,8 @@ try:
                 service = 'CE'
             elif 'gdss' in alarm.lower():
                 service = 'DISK Server'
+            elif 'fts' in alarm.lower():
+                service = 'FTS'
 
             # Get hostname from Nagios alarm
             if hostFiller in alarm:
