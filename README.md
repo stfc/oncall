@@ -13,13 +13,14 @@ There are a couple of steps to using this script as there will be some cleanup t
     - Queue is OnCall
     - Status is new or open
     - Subject not like 'NoCall'
-    - Subject not like 'Tier1_service_Test_Nagios_and_paging_on_host_nagger' (test pager tickets)
+    - Subject not like 'Test_Nagios' (test tickets)
     - Subject not like 'Downtime Expiry Report'
     - Sort ID by ascending
 - Download spreadsheet (.TSV file) from search results (press 'Spreadsheet' hyperlink towards top right of the page)
 - Put OnCall spreadsheet (found in TWiki within Tier 1 section) and TSV file in same folder as script and then run script
 
 ### Post-Script Execution
+- Format column D as Time
 - Fill in any blank cells the script didn't fill from the following columns:
     - Host
     - Service
@@ -27,4 +28,4 @@ There are a couple of steps to using this script as there will be some cleanup t
     - Handled by
     - Any helpful comments
 - Upload to TWiki
-- After the meeting, resolve all tickets from the OnCall queue, except the ones where the situation is still ongoing or haven't been put in the spreadsheet
+- After the meeting, resolve all tickets from the OnCall queue search, except the ones where the situation is still ongoing
