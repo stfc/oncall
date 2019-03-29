@@ -5,7 +5,7 @@ from datetime import datetime
 
 NEW_TICKETS_FILE_NAME = "Results.tsv"
 SPREADSHEET_NAME = "Callouts.xlsx"
-SHEET_NAME = "Callouts 2018"
+SHEET_NAME = "Callouts 2019"
 
 try:
     with open(NEW_TICKETS_FILE_NAME) as tsv:
@@ -57,9 +57,9 @@ try:
             ticketID = int(row[0])
             
             ticketCreated = datetime.strptime(row[15], '%Y-%m-%d %H:%M:%S')
+            dateCreated = ticketCreated.strftime('%d/%m/%Y')
             #Excel date time counts days and seconds since 1900-01-00 but mistakenly treats 1900 as a leap year
             excelTicketCreated = ticketCreated - datetime(1899, 12, 30)
-            dateCreated = float(excelTicketCreated.days)
             timeCreated = float(excelTicketCreated.seconds) / 86400
 
             # Is callout in work hours (8:30-5:00 converted into percent of day)?
@@ -78,12 +78,26 @@ try:
             # Service
             if 'ceph' in alarm.lower():
                 service = 'CEPH'
+            elif 'lcgdb' in alarm.lower() or 'database' in alarm.lower():
+                service = 'DATABASE'
+            elif 'castor' in alarm.lower():
+                service = 'CASTOR'
             elif 'arc-ce' in alarm.lower():
                 service = 'CE'
-            elif 'gdss' in alarm.lower():
+            elif 'bdii' in alarm.lower():
+                service = 'BDII'
+            elif 'dss' in alarm.lower():
                 service = 'DISK Server'
             elif 'fts' in alarm.lower():
                 service = 'FTS'
+            elif 'ipv6' in alarm.lower() or 'network' in alarm.lower():
+                service = 'NETWORK'
+            elif 'eql-varray' in alarm.lower():
+                service = 'Hypervisor'
+            elif 'condor' in alarm.lower():
+                service = 'BATCH'
+            elif 'argus' in alarm.lower():
+                service = 'Argus'
 
             # Get hostname from Nagios alarm
             if hostFiller in alarm:
