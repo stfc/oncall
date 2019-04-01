@@ -5,7 +5,7 @@ from datetime import datetime
 
 NEW_TICKETS_FILE_NAME = "Results.tsv"
 SPREADSHEET_NAME = "Callouts.xlsx"
-SHEET_NAME = "Callouts 2019"
+SHEET_NAME = "Callouts %s" % datetime.now().year
 
 try:
     with open(NEW_TICKETS_FILE_NAME) as tsv:
