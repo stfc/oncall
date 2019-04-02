@@ -55,7 +55,7 @@ try:
             hostCheck = True
             workingHours = False
             ticketID = int(row[0])
-            
+
             ticketCreated = datetime.strptime(row[15], '%Y-%m-%d %H:%M:%S')
             dateCreated = ticketCreated.strftime('%d/%m/%Y')
             #Excel date time counts days and seconds since 1900-01-00 but mistakenly treats 1900 as a leap year
@@ -139,11 +139,12 @@ try:
                                    bottom=innerBorderStyle)
         for row in rows:
             for cell in row:
-                if cell.column == 'A' or cell.column == 'K':
+                if cell.column == 1 or cell.column == 11:
                     # These columns need to be horizontally left aligned (alarm and comment columns)
-                    cell.alignment = Alignment(vertical='center', wrap_text=True)
+                    cell.alignment = Alignment(horizontal='left', vertical='center', wrap_text=True)
                 else:
                     cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+                    # print(cell.column)
 
                 cell.border = innerBorderFormat
 
