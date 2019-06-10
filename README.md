@@ -9,8 +9,7 @@ Only openpyxl is needed for this script. The script was written using version 2.
 There are a couple of steps to using this script as there will be some cleanup to do once the script has executed.
 
 ### Pre-Script Execution
-- Load the saved search 'OnCall Spreadsheet' under 'Tier1a-support's saved searches.
-Or create a custom search with the following criteria:
+- Load the saved search `OnCall Spreadsheet` under `Tier1a-support's saved searches` or create a custom search with the following criteria:
     - Queue is OnCall
     - Status is new or open
     - Subject not like 'NoCall'
