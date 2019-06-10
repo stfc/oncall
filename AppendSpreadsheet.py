@@ -56,7 +56,7 @@ try:
             workingHours = False
             ticketID = int(row[0])
 
-            ticketCreated = datetime.strptime(row[15], '%Y-%m-%d %H:%M:%S')
+            ticketCreated = datetime.strptime(row[15], '%a %b %d %H:%M:%S %Y')
             dateCreated = ticketCreated.strftime('%d/%m/%Y')
             #Excel date time counts days and seconds since 1900-01-00 but mistakenly treats 1900 as a leap year
             excelTicketCreated = ticketCreated - datetime(1899, 12, 30)
