@@ -56,7 +56,7 @@ try:
             workingHours = False
             ticketID = int(row[0])
 
-            ticketCreated = datetime.strptime(row[15], '%a %b %d %H:%M:%S %Y')
+            ticketCreated = datetime.strptime(row[3], '%a %b %d %H:%M:%S %Y')
             dateCreated = ticketCreated.strftime('%d/%m/%Y')
             #Excel date time counts days and seconds since 1900-01-00 but mistakenly treats 1900 as a leap year
             excelTicketCreated = ticketCreated - datetime(1899, 12, 30)
@@ -68,7 +68,7 @@ try:
                 workingHours = True
 
             # Get Nagios alarm (or subject if not from Nagios)
-            alarm = row[2]
+            alarm = row[1]
             if nagiosFiller in alarm:
                 for k in range(len(nagiosFiller), len(alarm)):
                     if 'T' in alarm[k]:

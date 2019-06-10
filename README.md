@@ -1,5 +1,5 @@
 # Automating OnCall Spreadsheet
-This is a Python script to aid filling in the OnCall spreadsheet. The spreadsheet is used during the 3pm meeting on a Monday to discuss callouts from the past week. 
+This is a Python script to aid filling in the OnCall spreadsheet. The spreadsheet is used during the 3pm meeting on a Monday to discuss callouts from the past week.
 The script takes data from a TSV file downloaded from RT using a specific search (see 'Using Script') and appends it to the ongoing OnCall spreadsheet (found within Tier 1's section on the TWiki).
 
 ## Required Packages
@@ -16,6 +16,11 @@ There are a couple of steps to using this script as there will be some cleanup t
     - Subject not like 'Test_Nagios' (test tickets)
     - Subject not like 'Downtime Expiry Report'
     - Sort ID by ascending
+- Set the first four display columns to the following order:
+    - id
+    - Subject
+    - Status
+    - Created
 - Download spreadsheet (.TSV file) from search results (press 'Spreadsheet' hyperlink towards top right of the page)
 - Put OnCall spreadsheet (found in TWiki within Tier 1 section) and TSV file in same folder as script and then run script
 
