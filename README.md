@@ -9,7 +9,7 @@ Only openpyxl is needed for this script. The script was written using version 2.
 There are a couple of steps to using this script as there will be some cleanup to do once the script has executed.
 
 ### Pre-Script Execution
-- Load the saved search `OnCall Spreadsheet` under `Tier1a-support's saved searches` or create a custom search with the following criteria:
+1. Load the saved search `OnCall Spreadsheet` under `Tier1a-support's saved searches` or create a custom search with the following criteria:
     - Queue is OnCall
     - Status is new or open
     - Subject not like 'NoCall'
@@ -22,16 +22,16 @@ There are a couple of steps to using this script as there will be some cleanup t
       - Status
       - Created
 
-- Download spreadsheet (.TSV file) from search results (press 'Spreadsheet' hyperlink towards top right of the page)
-- Put OnCall spreadsheet (found in TWiki within Tier 1 section) and TSV file in same folder as script and then run script
+2. Download spreadsheet (.TSV file) from search results (press 'Spreadsheet' hyperlink towards top right of the page)
+3. Put OnCall spreadsheet (found in TWiki within Tier 1 section) and TSV file in same folder as script and then run script
 
 ### Post-Script Execution
-- Format column D as Time
-- Fill in any blank cells the script didn't fill from the following columns:
+1. Format column D as Time
+2. Fill in any blank cells the script didn't fill from the following columns:
     - Host
     - Service
     - People involved
     - Handled by
     - Any helpful comments
-- Upload to TWiki
-- After the meeting, resolve all tickets from the OnCall queue search, except the ones where the situation is still ongoing
+3. Upload to TWiki
+4. After the meeting, resolve all tickets from the OnCall queue search, except the ones where the situation is still ongoing
