@@ -9,18 +9,20 @@ Only openpyxl is needed for this script. The script was written using version 2.
 There are a couple of steps to using this script as there will be some cleanup to do once the script has executed.
 
 ### Pre-Script Execution
-- Create a custom ticket search in RT:
+- Load the saved search 'OnCall Spreadsheet' under 'Tier1a-support's saved searches.
+Or create a custom search with the following criteria:
     - Queue is OnCall
     - Status is new or open
     - Subject not like 'NoCall'
     - Subject not like 'Test_Nagios' (test tickets)
     - Subject not like 'Downtime Expiry Report'
     - Sort ID by ascending
-- Set the first four display columns to the following order:
-    - id
-    - Subject
-    - Status
-    - Created
+    - Set the first four display columns to the following order:
+      - id
+      - Subject
+      - Status
+      - Created
+
 - Download spreadsheet (.TSV file) from search results (press 'Spreadsheet' hyperlink towards top right of the page)
 - Put OnCall spreadsheet (found in TWiki within Tier 1 section) and TSV file in same folder as script and then run script
 
